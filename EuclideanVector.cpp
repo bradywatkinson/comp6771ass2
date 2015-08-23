@@ -114,12 +114,13 @@ std::vector<double> EuclideanVector::getMagnitude () const
 }
 
 std::ostream& operator<<(std::ostream &os, const EuclideanVector &v)
+
 {
-	os << "[";
-	for (std::vector<double>::const_iterator it=v.getMagnitude().begin();it!=v.getMagnitude().end();++it) {
-		os << *it << " ";
-	}
-	os << "]";
+	//os << "[ ";
+	// for (std::vector<double>::const_iterator it=v.getMagnitude().begin();it!=v.getMagnitude().end();++it) {
+	// 	os << *it << " ";
+	// }
+	//os << "]";
 	return os;
 }
 
