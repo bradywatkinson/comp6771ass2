@@ -4,15 +4,13 @@
 
 #include "EuclideanVector.h"
 
-using namespace cs6771;
-
 int main (void) {
 
 	std::list<double> l;
 	l.push_back(5.0);		
 	l.push_back(6.5);
 	l.push_back(7.0);
-	cs6771::EuclideanVector c(l.begin(),l.end());	
+	EuclideanVector c(l.begin(),l.end());	
 
 	std::cout << c << std::endl;
 

@@ -3,10 +3,13 @@
 #include <vector>
 #include <list>
 #include <array>
+#include <algorithm>
+#include <iterator>
+#include <string>
+#include <sstream>
 
 #include "EuclideanVector.h"
 
-using namespace cs6771;
 
 EuclideanVector::EuclideanVector(unsigned int dimension) :
 	dimension_{dimension}
@@ -113,14 +116,15 @@ std::vector<double> EuclideanVector::getMagnitude () const
 	return magnitude_;
 }
 
-std::ostream& operator<<(std::ostream &os, const EuclideanVector &v)
+std::ostream& operator<<(std::ostream &os, const EuclideanVector &ev)
 
 {
-	//os << "[ ";
-	// for (std::vector<double>::const_iterator it=v.getMagnitude().begin();it!=v.getMagnitude().end();++it) {
-	// 	os << *it << " ";
-	// }
-	//os << "]";
+	std::vector<double> v = ev.getMagnitude();
+	std::ostringstream ss;
+	std::copy(v.begin(), v.end() - 1, std::ostream_iterator<double>(ss, ", "));
+   	ss << v.back();
+   	os << "[" << ss.str() << "]";
+
 	return os;
 }
 

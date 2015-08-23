@@ -7,7 +7,6 @@
 #include <array>
 
 
-namespace cs6771{
 
 	class EuclideanVector {
 		public:
@@ -49,6 +48,5 @@ namespace cs6771{
 			unsigned int dimension_;
 			std::vector<double> magnitude_;
 	};
-}
 
 #endif
