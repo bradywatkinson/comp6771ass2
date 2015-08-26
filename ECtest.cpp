@@ -10,7 +10,7 @@ int main (void) {
 	l.push_back(5.0);		
 	l.push_back(6.5);
 	l.push_back(7.0);
-	EuclideanVector c(l.begin(),l.end());	
+	cs6771::EuclideanVector c(l.begin(),l.end());	
 
 	std::cout << c << std::endl;
 
