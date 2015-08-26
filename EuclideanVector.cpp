@@ -151,7 +151,7 @@ namespace cs6771 {
 	EuclideanVector& EuclideanVector::createUnitVector() const
 	{
 		std::vector<double> fm(dimension_);	//initialise the new magnitude vector
-		for (int i=0;i<dimension_;++i) {
+		for (int i=0;i<int(dimension_);++i) {
 			fm[i] /= normal_;
 		}
 		EuclideanVector *unitVector = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};
@@ -191,7 +191,7 @@ namespace cs6771 {
 			abort();
 		}
 		const std::vector<double> m = ev.getMagnitude();
-		for (int i=0;i<dimension_;++i) {
+		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] += m[i];
 		}
 		return *this;
@@ -205,7 +205,7 @@ namespace cs6771 {
 			abort();
 		}
 		const std::vector<double> m = ev.getMagnitude();
-		for (int i=0;i<dimension_;++i) {
+		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] -= m[i];
 		}
 		return *this;
@@ -214,7 +214,7 @@ namespace cs6771 {
 	EuclideanVector& EuclideanVector::operator*=(const double s)
 	{
 
-		for (int i=0;i<dimension_;++i) {
+		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] *= s;
 		}
 		return *this;
@@ -223,7 +223,7 @@ namespace cs6771 {
 	EuclideanVector& EuclideanVector::operator/=(const double s)
 	{
 
-		for (int i=0;i<dimension_;++i) {
+		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] /= s;
 		}
 		return *this;
@@ -256,7 +256,7 @@ namespace cs6771 {
 		if (lhs.getNumDimensions() != rhs.getNumDimensions()) return false;
 		const std::vector<double>& l = lhs.getMagnitude();
 		const std::vector<double>& r = rhs.getMagnitude();
-		for (int i=0;i<lhs.getNumDimensions();++i) {
+		for (int i=0;i<int(lhs.getNumDimensions());++i) {
 			if (!EuclideanVector::doubleEquals(l.at(i), r.at(i))) return false;
 		}
 		return true;
