@@ -12,13 +12,15 @@
 
 #include "EuclideanVector.h"
 
+#define DEBUG false
+
 namespace cs6771 {
 
 	EuclideanVector::EuclideanVector(unsigned int dimension) :
 		EuclideanVector(dimension,0.0)
 	{
 		updateNormal();
-		std::cout << "EuclideanVector(1)" << std::endl;
+		if (DEBUG) std::cout << "EuclideanVector(1)" << std::endl;
 	}
 
 	EuclideanVector::EuclideanVector(unsigned int dimension, double magnitude) :
@@ -27,27 +29,21 @@ namespace cs6771 {
 		std::vector<double> v (dimension, magnitude);
 		magnitude_ 	= std::move(v);
 		updateNormal();
-		std::cout << "EuclideanVector(3)" << std::endl;
+		if (DEBUG) std::cout << "EuclideanVector(2)" << std::endl;
 	}
 
-	EuclideanVector::EuclideanVector(double dimension, double magnitude) :
-		dimension_{static_cast<unsigned int>(dimension)}
-	{
-		std::vector<double> v (dimension, magnitude);
-		magnitude_ 	= std::move(v);
-		updateNormal();
-		std::cout << "EuclideanVector(3)" << std::endl;
-	}
+	// EuclideanVector::EuclideanVector(double dimension, double magnitude) :
+	// 	dimension_{static_cast<unsigned int>(dimension)}
+	// {
+	// 	std::vector<double> v (dimension, magnitude);
+	// 	magnitude_ 	= std::move(v);
+	// 	updateNormal();
+	// 	if (DEBUG) std::cout << "EuclideanVector(3)" << std::endl;
+	// }
 
 
 	//Iterator Initialisers
 
-	/*
-	EuclideanVector::EuclideanVector(std::vector<double>::iterator begin, std::vector<double>::iterator end) :
-		magnitude_{begin,end},
-		dimension_{magnitude_.size}
-	{ }
-	*/
 	// EuclideanVector::EuclideanVector(std::vector<double>::iterator begin, std::vector<double>::iterator end)
 	// {
 	// 	magnitude_ 	= std::vector<double>(begin,end);
@@ -63,24 +59,24 @@ namespace cs6771 {
 	// 	updateNormal();
 	// 	std::cout << "EuclideanVector List Init" << std::endl;
 	// }
-	/*
 
-	EuclideanVector::EuclideanVector(std::array<double,int>::iterator begin, std::array<double,int>::iterator end)
-	{
-		std::vector<double> v (begin, end);
-		magnitude_ = std::move(v);
-		dimension_ = magnitude_.size();	
-	}
-	*/
+	// EuclideanVector::EuclideanVector(std::array<double>::iterator begin, std::array<double>::iterator end)
+	// {
+	// 	magnitude_ = std::vector<double>(begin,end);
+	// 	dimension_ = magnitude_.size();	
+	// 	updateNormal();
+	// 	std::cout << "EuclideanVector List Init" << std::endl;
+	// }
 	
-	template <typename T>
-	EuclideanVector::EuclideanVector(T begin, T end)
-	{
-		magnitude_ = std::vector<double>(begin, end);
-		dimension_ = magnitude_.size();	
-		updateNormal();
-		std::cout << "EuclideanVector(4)" << std::endl;
-	}
+	
+	// template <typename T>
+	// EuclideanVector::EuclideanVector(T begin, T end)
+	// {
+	// 	// magnitude_ = std::vector<double>(begin, end);
+	// 	// dimension_ = magnitude_.size();	
+	// 	// updateNormal();
+	// 	// std::cout << "EuclideanVector(4)" << std::endl;
+	// }
 
 	//copy constructor
 	EuclideanVector::EuclideanVector(const EuclideanVector &ev) :
@@ -88,6 +84,7 @@ namespace cs6771 {
 		magnitude_{ev.magnitude_}
 	{
 		updateNormal();
+		if (DEBUG) std::cout << "Copy constructor" << std::endl;
 	}
 	//move constructor
 	EuclideanVector::EuclideanVector(EuclideanVector &&ev) :
@@ -95,12 +92,13 @@ namespace cs6771 {
 		magnitude_{std::move(ev.magnitude_)}
 	{
 		updateNormal();
+		if (DEBUG) std::cout << "Move constructor" << std::endl;
 	}
 
 	//Destructor
 	EuclideanVector::~EuclideanVector()
 	{
-		std::cout << "deleting a EuclideanVector" << std::endl;
+		if (DEBUG) std::cout << "deleting a EuclideanVector" << std::endl;
 	}
 
 	//=copy Operator
@@ -111,7 +109,7 @@ namespace cs6771 {
 			magnitude_ 	= ev.magnitude_;
 			normal_ 	= ev.normal_;
 		}
-		std::cout << "in copy operator" << std::endl;
+		if (DEBUG) std::cout << "in copy operator" << std::endl;
 		return *this;
 	}
 	//=move Operator
@@ -122,7 +120,7 @@ namespace cs6771 {
 			magnitude_ 	= std::move(ev.magnitude_);
 			normal_		= std::move(ev.normal_);
 		}
-		std::cout << "in move operator" << std::endl;
+		if (DEBUG) std::cout << "in move operator" << std::endl;
 		return *this;
 	}
 
@@ -152,7 +150,7 @@ namespace cs6771 {
 	{
 		std::vector<double> fm(dimension_);	//initialise the new magnitude vector
 		for (int i=0;i<int(dimension_);++i) {
-			fm[i] /= normal_;
+			fm[i] = magnitude_[i] / normal_;
 		}
 		EuclideanVector *unitVector = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};
 		return *unitVector;
@@ -235,6 +233,16 @@ namespace cs6771 {
 	{
 		return magnitude_;
 	}
+
+	EuclideanVector::operator std::list<double>() const
+	{
+		return std::list<double>(magnitude_.begin(),magnitude_.end());
+	}
+
+	// EuclideanVector::operator std::array<double,int>() const
+	// {
+	// 	return magnitude_;
+	// }
 
 
 	//---Friend Functions---
@@ -323,7 +331,7 @@ namespace cs6771 {
 		return dotproduct;
 	}
 
-	EuclideanVector& operator*(const EuclideanVector &ev, const double s)
+	template <typename NUM> EuclideanVector& operator*(const EuclideanVector &ev, const NUM s)
 	{
 
 		int d = ev.getNumDimensions();
@@ -339,7 +347,7 @@ namespace cs6771 {
 		return *product;
 	}
 
-	EuclideanVector& operator*(const double s, const EuclideanVector &ev)
+	template <typename NUM> EuclideanVector& operator*(const NUM s, const EuclideanVector &ev)
 	{
 
 		int d = ev.getNumDimensions();
@@ -355,7 +363,7 @@ namespace cs6771 {
 		return *product;
 	}
 
-	EuclideanVector& operator/(const EuclideanVector &ev, const double s)
+	template <typename NUM> EuclideanVector& operator/(const EuclideanVector &ev, const NUM s)
 	{
 
 		int d = ev.getNumDimensions();
@@ -363,7 +371,7 @@ namespace cs6771 {
 		std::vector<double> fm(d);					//initialise the new magnitude vector to the size of the original two
 
 		for (int i=0;i<d;++i) {
-			fm[i] = v[i]/s;
+			fm[i] = v[i]/static_cast<double>(s);
 		}
 
 		EuclideanVector *product = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
@@ -388,6 +396,16 @@ namespace cs6771 {
 		return fabs(a-b) < 0.00001;
 	}
 
+	//---Explicit Instantiation---
+
+	template EuclideanVector& operator*<int>(const int s, const EuclideanVector &ev);
+	template EuclideanVector& operator*<double>(const double s, const EuclideanVector &ev);
+
+	template EuclideanVector& operator*<int>(const EuclideanVector &ev, const int s);
+	template EuclideanVector& operator*<double>(const EuclideanVector &ev, const double s);
+
+	template EuclideanVector& operator/<int>(const EuclideanVector &ev, const int s);
+	template EuclideanVector& operator/<double>(const EuclideanVector &ev, const double s);
 }
 
 

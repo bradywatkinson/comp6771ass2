@@ -2,6 +2,7 @@
 #include <vector>
 #include <list>
 #include <array>
+#include <iterator>
 
 #include "EuclideanVector.h"
 
@@ -13,7 +14,7 @@ int main() {
 	std::list<double> l {1,2,3};
 	cs6771::EuclideanVector b{l.begin(),l.end()};
 	
-	/*
+	
 	std::vector<double> v2 {4,5,6,7};
 	cs6771::EuclideanVector c{v2.begin(),v2.end()};
 	
@@ -39,6 +40,7 @@ int main() {
 	std::cout << g << std::endl;
 	
 	// try operator overloading
+	std::cout << "try +=" << std::endl;
 	e += d;
 	std::cout << e << std::endl;
 	
@@ -69,5 +71,4 @@ int main() {
 	for (auto d : lj) {
 		std::cout << d << std::endl;
 	}
-	*/
 }

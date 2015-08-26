@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include <array>
+#include <iterator>
 
 
 namespace cs6771 {
@@ -15,12 +16,18 @@ namespace cs6771 {
 			//normal constructors
 			EuclideanVector(unsigned int dimension);
 			EuclideanVector(unsigned int dimension, double magnitude);
-			EuclideanVector(double dimension, double magnitude);
-			template <typename T>
-			EuclideanVector(T begin, T end);
-			//EuclideanVector(std::vector<double>::iterator begin, std::vector<double>::iterator end);
-			//EuclideanVector(std::list<double>::iterator begin, std::list<double>::iterator end);
-			//EuclideanVector(std::array<double>::iterator begin, std::array<double>::iterator end);
+			// template <typename NUM> EuclideanVector(NUM dimension);
+			// template <typename NUM1, typename NUM2> EuclideanVector(NUM1 dimension, NUM2 magnitude);			
+			template <typename T> EuclideanVector(T begin, T end)
+			{
+				magnitude_ = std::vector<double>(begin, end);
+				dimension_ = magnitude_.size();	
+				updateNormal();
+				//std::cout << "EuclideanVector(4)" << std::endl;
+			}
+			// EuclideanVector(std::vector<double>::iterator begin, std::vector<double>::iterator end);
+			// EuclideanVector(std::list<double>::iterator begin, std::list<double>::iterator end);
+			// EuclideanVector(std::array<double>::iterator begin, std::array<double>::iterator end);
 			
 
 			//copy constructor
@@ -55,7 +62,9 @@ namespace cs6771 {
 			EuclideanVector& operator/=(const double s);
 
 			//---Type Conversion---
-			explicit operator std::vector<double>() const;
+			operator std::vector<double>() const;
+			operator std::list<double>() const;
+			//operator std::array<double,int>() const;
 
 			//---Static Functions
 			static bool doubleEquals (double a, double b);
@@ -67,9 +76,10 @@ namespace cs6771 {
 			friend EuclideanVector& operator+(const EuclideanVector &lhs, const EuclideanVector &rhs);
 			friend EuclideanVector& operator-(const EuclideanVector &lhs, const EuclideanVector &rhs);
 			friend double operator*(const EuclideanVector &lhs, const EuclideanVector &rhs);
-			friend EuclideanVector& operator*(const EuclideanVector &ev, const double s);
-			friend EuclideanVector& operator*(const double s, const EuclideanVector &ev);
-			//friend EuclideanVector& operator/(const EuclideanVector &ev, const double s);
+			template <typename NUM> friend EuclideanVector& operator*(const EuclideanVector &ev, const NUM s);
+			template <typename NUM> friend EuclideanVector& operator*(const NUM s, const EuclideanVector &ev);
+			template <typename NUM> friend EuclideanVector& operator/(const EuclideanVector &ev, const NUM s);
+
 
 
 		private:
