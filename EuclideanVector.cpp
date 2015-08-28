@@ -92,7 +92,7 @@ namespace cs6771 {
 		for (int i=0;i<int(dimension_);++i) {
 			fm[i] = magnitude_[i] / normal_;
 		}
-		EuclideanVector *unitVector = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};
+		EuclideanVector *unitVector = new EuclideanVector{fm.begin(),fm.end()};
 		return *unitVector;
 	}
 
@@ -215,7 +215,7 @@ namespace cs6771 {
 		for (int i=0;i<d;++i) {
 			fm[i] = lm[i] + rm[i];
 		}
-		EuclideanVector *sum = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+		EuclideanVector *sum = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
 
 		return *sum;
 	}
@@ -234,7 +234,7 @@ namespace cs6771 {
 		for (int i=0;i<d;++i) {
 			fm[i] = lm[i] - rm[i];
 		}
-		EuclideanVector *sum = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+		EuclideanVector *sum = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
 
 		return *sum;
 	}
@@ -268,7 +268,7 @@ namespace cs6771 {
 			fm[i] = s*v[i];
 		}
 
-		EuclideanVector *product = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+		EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
 
 		return *product;
 	}
@@ -284,7 +284,7 @@ namespace cs6771 {
 			fm[i] = s*v[i];
 		}
 
-		EuclideanVector *product = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+		EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
 
 		return *product;
 	}
@@ -300,7 +300,7 @@ namespace cs6771 {
 			fm[i] = v[i]/static_cast<double>(s);
 		}
 
-		EuclideanVector *product = new EuclideanVector::EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+		EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
 
 		return *product;
 	}

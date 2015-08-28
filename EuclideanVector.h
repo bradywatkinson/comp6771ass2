@@ -18,6 +18,13 @@ namespace cs6771 {
 
 			//----Contructors----
 			//normal constructors
+			
+			/*
+			template constructors were required to be in the header file otherwise that must
+			be explicitly intantiated which would defeat the purpose of having them
+			*/
+			
+			//Constructor in a variable of any numeric type and calls the following constructor (which will static cast the paramter to an unsigned int)
 			template <typename NUM> EuclideanVector(const NUM dimension, typename std::enable_if<std::is_arithmetic<NUM>::value>::type* = 0) :
 				EuclideanVector(dimension,0.0)
 			{
@@ -25,6 +32,11 @@ namespace cs6771 {
 				if (DEBUG) std::cout << "EuclideanVector(1)" << std::endl;
 			}
 
+			/**
+			Takes in a dimension and a magnitude of two same arithmetic types.
+			Dimension will be static cast to unsigned int
+			magnitude will be static cast to double
+			*/
 			template <typename NUM> EuclideanVector(const NUM dimension, const NUM magnitude, typename std::enable_if<std::is_arithmetic<NUM>::value>::type* = 0) :
 				dimension_{static_cast<unsigned int>(dimension)}
 			{
@@ -33,6 +45,11 @@ namespace cs6771 {
 				if (DEBUG) std::cout << "EuclideanVector(2): "<< dimension_ << " " << magnitude << std::endl;
 			}
 
+			/**
+			Takes in a dimension and a magnitude of two different arithmetic types.
+			Dimension will be static cast to unsigned int
+			magnitude will be static cast to double
+			*/
 			template <typename NUM1, typename NUM2> EuclideanVector(const NUM1 dimension, const NUM2 magnitude, typename std::enable_if<std::is_arithmetic<NUM1>::value>::type* = 0, typename std::enable_if<std::is_arithmetic<NUM2>::value>::type* = 0) :
 				dimension_{static_cast<unsigned int>(dimension)}
 			{
@@ -40,8 +57,11 @@ namespace cs6771 {
 				updateNormal();
 				if (DEBUG) std::cout << "EuclideanVector(3): "<< dimension_ << " " << magnitude << std::endl;
 			}
-
-			template <typename T> EuclideanVector(T begin, T end, typename std::enable_if<!std::is_integral<T>::value>::type* = 0)
+			
+			/**
+			Takes in a two iterators pointing to the beginning and end of a std container
+			*/
+			template <typename IT> EuclideanVector(IT begin, IT end, typename std::enable_if<!std::is_integral<IT>::value>::type* = 0)
 			{
 				magnitude_ = std::vector<double>(begin, end);
 				dimension_ = magnitude_.size();	
