@@ -7,6 +7,8 @@
 #include <array>
 #include <iterator>
 
+#include <typeinfo>
+
 
 namespace cs6771 {
 	class EuclideanVector {
@@ -14,16 +16,19 @@ namespace cs6771 {
 
 			//----Contructors----
 			//normal constructors
-			EuclideanVector(unsigned int dimension);
-			EuclideanVector(unsigned int dimension, double magnitude);
+			EuclideanVector(const unsigned dimension);
+			//template <typename NUM> EuclideanVector(const NUM dimension);
+			//EuclideanVector(unsigned int dimension, double magnitude);
+			//EuclideanVector(unsigned int dimension, int magnitude);
 			// template <typename NUM> EuclideanVector(NUM dimension);
-			// template <typename NUM1, typename NUM2> EuclideanVector(NUM1 dimension, NUM2 magnitude);			
+			template <typename NUM1, typename NUM2> EuclideanVector(const NUM1 dimension, const NUM2 magnitude);
+
 			template <typename T> EuclideanVector(T begin, T end)
 			{
 				magnitude_ = std::vector<double>(begin, end);
 				dimension_ = magnitude_.size();	
 				updateNormal();
-				//std::cout << "EuclideanVector(4)" << std::endl;
+				std::cout << "EuclideanVector(4) received " << typeid(begin).name() << std::endl;
 			}
 			// EuclideanVector(std::vector<double>::iterator begin, std::vector<double>::iterator end);
 			// EuclideanVector(std::list<double>::iterator begin, std::list<double>::iterator end);

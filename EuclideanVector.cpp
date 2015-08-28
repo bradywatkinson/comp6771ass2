@@ -12,24 +12,53 @@
 
 #include "EuclideanVector.h"
 
-#define DEBUG false
+#define DEBUG true
 
 namespace cs6771 {
 
-	EuclideanVector::EuclideanVector(unsigned int dimension) :
+	EuclideanVector::EuclideanVector(const unsigned int dimension) :
 		EuclideanVector(dimension,0.0)
 	{
 		updateNormal();
 		if (DEBUG) std::cout << "EuclideanVector(1)" << std::endl;
 	}
 
-	EuclideanVector::EuclideanVector(unsigned int dimension, double magnitude) :
-		dimension_{dimension}
+	// template <typename NUM> EuclideanVector::EuclideanVector(const NUM dimension) :
+	// 	EuclideanVector(dimension,0.0)
+	// {
+	// 	updateNormal();
+	// 	if (DEBUG) std::cout << "EuclideanVector(1)" << std::endl;
+	// }
+
+	// EuclideanVector::EuclideanVector(unsigned int dimension, double magnitude) :
+	// 	dimension_{dimension}
+	// {
+	// 	magnitude_ 	= std::vector<double>(dimension, magnitude);
+	// 	updateNormal();
+	// 	if (DEBUG) std::cout << "EuclideanVector(2): "<< dimension_ << std::endl;
+	// }
+
+	// EuclideanVector::EuclideanVector(unsigned int dimension, int magnitude) :
+	// 	dimension_{dimension}
+	// {
+	// 	magnitude_ 	= std::vector<double>(dimension, stamagnitude);
+	// 	updateNormal();
+	// 	if (DEBUG) std::cout << "EuclideanVector(3): "<< dimension_ << std::endl;
+	// }
+
+	// template <typename NUM> EuclideanVector(NUM dimension) :
+	// 	EuclideanVector(dimension,0.0);
+	// {
+	// 	updateNormal();
+	// 	if (DEBUG) std::cout << "EuclideanVector(1)" << std::endl;
+	// }
+
+	template <typename NUM1, typename NUM2> EuclideanVector::EuclideanVector(const NUM1 dimension, const NUM2 magnitude) :			
+		dimension_{static_cast<unsigned int>(dimension)}
 	{
-		std::vector<double> v (dimension, magnitude);
-		magnitude_ 	= std::move(v);
+		magnitude_ 	= std::vector<double>(dimension_, static_cast<double>(magnitude));
 		updateNormal();
-		if (DEBUG) std::cout << "EuclideanVector(2)" << std::endl;
+		if (DEBUG) std::cout << "EuclideanVector(5): "<< dimension_ << " " << magnitude << std::endl;
 	}
 
 	// EuclideanVector::EuclideanVector(double dimension, double magnitude) :
@@ -98,7 +127,7 @@ namespace cs6771 {
 	//Destructor
 	EuclideanVector::~EuclideanVector()
 	{
-		if (DEBUG) std::cout << "deleting a EuclideanVector" << std::endl;
+		//if (DEBUG) std::cout << "deleting a EuclideanVector" << std::endl;
 	}
 
 	//=copy Operator
@@ -252,7 +281,7 @@ namespace cs6771 {
 	{
 		const std::vector<double>& v = ev.getMagnitude();
 		std::ostringstream ss;
-		std::copy(v.begin(), v.end() - 1, std::ostream_iterator<double>(ss, ", "));
+		std::copy(v.begin(), v.end() - 1, std::ostream_iterator<double>(ss, " "));
 	   	ss << v.back();
 	   	os << "[" << ss.str() << "]";
 
@@ -397,6 +426,17 @@ namespace cs6771 {
 	}
 
 	//---Explicit Instantiation---
+	// template EuclideanVector::EuclideanVector(const int dimension);
+	// template EuclideanVector::EuclideanVector(const unsigned int dimension);
+	// template EuclideanVector::EuclideanVector(const short dimension);
+	// template EuclideanVector::EuclideanVector(const unsigned short dimension);
+
+	template EuclideanVector::EuclideanVector(const int dimension, const double magnitude);
+	template EuclideanVector::EuclideanVector(const unsigned int dimension, const double magnitude);
+	template EuclideanVector::EuclideanVector(const int dimension, const int magnitude);
+	template EuclideanVector::EuclideanVector(const unsigned int dimension, const unsigned int magnitude);
+	template EuclideanVector::EuclideanVector(const int &dimension, const int &magnitude);	
+	template EuclideanVector::EuclideanVector(int &&dimension, int &&magnitude);
 
 	template EuclideanVector& operator*<int>(const int s, const EuclideanVector &ev);
 	template EuclideanVector& operator*<double>(const double s, const EuclideanVector &ev);

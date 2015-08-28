@@ -40,7 +40,6 @@ int main() {
 	std::cout << g << std::endl;
 	
 	// try operator overloading
-	std::cout << "try +=" << std::endl;
 	e += d;
 	std::cout << e << std::endl;
 	
