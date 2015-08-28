@@ -1,7 +1,13 @@
 CC=g++
 CFLAGS=-std=c++11 -Wall -Werror -O2
 
-All: ECtest2 ECtest3 ECtest4
+All: ECtest2 ECtest3 ECtest4 ECtest5
+
+ECtest5: ECtest5.o EuclideanVector.o
+	$(CC) $(CFLAGS) ECtest5.o EuclideanVector.o -o ECtest5
+
+ECtest5.o: ECtest5.cpp EuclideanVector.h
+	$(CC) $(CFLAGS) -c ECtest5.cpp
 
 ECtest4: ECtest4.o EuclideanVector.o
 	$(CC) $(CFLAGS) ECtest4.o EuclideanVector.o -o ECtest4

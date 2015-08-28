@@ -8,7 +8,9 @@
 #include <iterator>
 
 #include <typeinfo>
+#include <type_traits>
 
+#define DEBUG false
 
 namespace cs6771 {
 	class EuclideanVector {
@@ -16,24 +18,36 @@ namespace cs6771 {
 
 			//----Contructors----
 			//normal constructors
-			EuclideanVector(const unsigned dimension);
-			//template <typename NUM> EuclideanVector(const NUM dimension);
-			//EuclideanVector(unsigned int dimension, double magnitude);
-			//EuclideanVector(unsigned int dimension, int magnitude);
-			// template <typename NUM> EuclideanVector(NUM dimension);
-			template <typename NUM1, typename NUM2> EuclideanVector(const NUM1 dimension, const NUM2 magnitude);
+			template <typename NUM> EuclideanVector(const NUM dimension, typename std::enable_if<std::is_arithmetic<NUM>::value>::type* = 0) :
+				EuclideanVector(dimension,0.0)
+			{
+				updateNormal();
+				if (DEBUG) std::cout << "EuclideanVector(1)" << std::endl;
+			}
 
-			template <typename T> EuclideanVector(T begin, T end)
+			template <typename NUM> EuclideanVector(const NUM dimension, const NUM magnitude, typename std::enable_if<std::is_arithmetic<NUM>::value>::type* = 0) :
+				dimension_{static_cast<unsigned int>(dimension)}
+			{
+				magnitude_ 	= std::vector<double>(dimension_, static_cast<double>(magnitude));
+				updateNormal();
+				if (DEBUG) std::cout << "EuclideanVector(2): "<< dimension_ << " " << magnitude << std::endl;
+			}
+
+			template <typename NUM1, typename NUM2> EuclideanVector(const NUM1 dimension, const NUM2 magnitude, typename std::enable_if<std::is_arithmetic<NUM1>::value>::type* = 0, typename std::enable_if<std::is_arithmetic<NUM2>::value>::type* = 0) :
+				dimension_{static_cast<unsigned int>(dimension)}
+			{
+				magnitude_ 	= std::vector<double>(dimension_, static_cast<double>(magnitude));
+				updateNormal();
+				if (DEBUG) std::cout << "EuclideanVector(3): "<< dimension_ << " " << magnitude << std::endl;
+			}
+
+			template <typename T> EuclideanVector(T begin, T end, typename std::enable_if<!std::is_integral<T>::value>::type* = 0)
 			{
 				magnitude_ = std::vector<double>(begin, end);
 				dimension_ = magnitude_.size();	
 				updateNormal();
-				std::cout << "EuclideanVector(4) received " << typeid(begin).name() << std::endl;
+				if (DEBUG) std::cout << "EuclideanVector(4) received " << typeid(begin).name() << typeid(end).name() << std::endl;
 			}
-			// EuclideanVector(std::vector<double>::iterator begin, std::vector<double>::iterator end);
-			// EuclideanVector(std::list<double>::iterator begin, std::list<double>::iterator end);
-			// EuclideanVector(std::array<double>::iterator begin, std::array<double>::iterator end);
-			
 
 			//copy constructor
 			EuclideanVector(const EuclideanVector &ev);
@@ -48,7 +62,6 @@ namespace cs6771 {
 			//=move Operator
 			EuclideanVector& operator=(EuclideanVector &&ev);
 			
-
 			//---Member Functions---
 			unsigned int getNumDimensions() const;
 			const std::vector<double>& getMagnitude () const;
@@ -84,7 +97,6 @@ namespace cs6771 {
 			template <typename NUM> friend EuclideanVector& operator*(const EuclideanVector &ev, const NUM s);
 			template <typename NUM> friend EuclideanVector& operator*(const NUM s, const EuclideanVector &ev);
 			template <typename NUM> friend EuclideanVector& operator/(const EuclideanVector &ev, const NUM s);
-
 
 
 		private:
