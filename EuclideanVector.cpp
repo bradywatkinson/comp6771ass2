@@ -227,7 +227,7 @@ namespace cs6771 {
 	EuclideanVector& operator-(const EuclideanVector &lhs, const EuclideanVector &rhs)
 	{
 		if (lhs.getNumDimensions() != rhs.getNumDimensions()) {
-			std::cerr << "Addition operation failed: incompatible dimensions" << std::endl;
+			std::cerr << "Subtraction operation failed: incompatible dimensions" << std::endl;
 			abort();
 		}
 		int d = lhs.getNumDimensions();
@@ -246,7 +246,7 @@ namespace cs6771 {
 	double operator*(const EuclideanVector &lhs, const EuclideanVector &rhs)
 	{
 		if (lhs.getNumDimensions() != rhs.getNumDimensions()) {
-			std::cerr << "Addition operation failed: incompatible dimensions" << std::endl;
+			std::cerr << "Multiplication operation failed: incompatible dimensions" << std::endl;
 			abort();
 		}
 		int d = lhs.getNumDimensions();
@@ -259,54 +259,6 @@ namespace cs6771 {
 			dotproduct += lm[i]*rm[i];
 		}
 		return dotproduct;
-	}
-
-	template <typename NUM> EuclideanVector& operator*(const EuclideanVector &ev, const NUM s)
-	{
-
-		int d = ev.getNumDimensions();
-		const std::vector<double>& v = ev.getMagnitude();
-		std::vector<double> fm(d);					//initialise the new magnitude vector to the size of the original two
-
-		for (int i=0;i<d;++i) {
-			fm[i] = s*v[i];
-		}
-
-		EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
-
-		return *product;
-	}
-
-	template <typename NUM> EuclideanVector& operator*(const NUM s, const EuclideanVector &ev)
-	{
-
-		int d = ev.getNumDimensions();
-		const std::vector<double>& v = ev.getMagnitude();
-		std::vector<double> fm(d);					//initialise the new magnitude vector to the size of the original two
-
-		for (int i=0;i<d;++i) {
-			fm[i] = s*v[i];
-		}
-
-		EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
-
-		return *product;
-	}
-
-	template <typename NUM> EuclideanVector& operator/(const EuclideanVector &ev, const NUM s)
-	{
-
-		int d = ev.getNumDimensions();
-		const std::vector<double>& v = ev.getMagnitude();
-		std::vector<double> fm(d);					//initialise the new magnitude vector to the size of the original two
-
-		for (int i=0;i<d;++i) {
-			fm[i] = v[i]/static_cast<double>(s);
-		}
-
-		EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
-
-		return *product;
 	}
 
 	//---Private Function---
@@ -326,15 +278,6 @@ namespace cs6771 {
 		return fabs(a-b) < 0.00001;
 	}
 
-	//---Explicit Instantiation---
-	template EuclideanVector& operator*<int>(const int s, const EuclideanVector &ev);
-	template EuclideanVector& operator*<double>(const double s, const EuclideanVector &ev);
-
-	template EuclideanVector& operator*<int>(const EuclideanVector &ev, const int s);
-	template EuclideanVector& operator*<double>(const EuclideanVector &ev, const double s);
-
-	template EuclideanVector& operator/<int>(const EuclideanVector &ev, const int s);
-	template EuclideanVector& operator/<double>(const EuclideanVector &ev, const double s);
 }
 
 

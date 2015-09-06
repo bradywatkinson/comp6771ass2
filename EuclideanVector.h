@@ -10,7 +10,7 @@
 #include <typeinfo>
 #include <type_traits>
 
-#define DEBUG true
+#define DEBUG false
 
 namespace cs6771 {
 	class EuclideanVector {
@@ -100,9 +100,6 @@ namespace cs6771 {
 			operator std::list<double>() const;
 			//operator std::array<double,int>() const;
 
-			//---Static Functions
-			static bool doubleEquals (double a, double b);
-
 			//---Friend Functions---
 			friend std::ostream& operator<<(std::ostream &os, const EuclideanVector &v);
 			friend bool operator==(const EuclideanVector &lhs, const EuclideanVector &rhs);
@@ -110,10 +107,66 @@ namespace cs6771 {
 			friend EuclideanVector& operator+(const EuclideanVector &lhs, const EuclideanVector &rhs);
 			friend EuclideanVector& operator-(const EuclideanVector &lhs, const EuclideanVector &rhs);
 			friend double operator*(const EuclideanVector &lhs, const EuclideanVector &rhs);
-			template <typename NUM> friend EuclideanVector& operator*(const EuclideanVector &ev, const NUM s);
-			template <typename NUM> friend EuclideanVector& operator*(const NUM s, const EuclideanVector &ev);
-			template <typename NUM> friend EuclideanVector& operator/(const EuclideanVector &ev, const NUM s);
 
+
+			/*
+			 * operator* and operator/ use templates with arithmetic values so all arithmetic
+			 * types can be used. Arithmetic types is enforced through static_cast<double>
+			 * this will throw an error if the instantiated type is not compatible with a double
+			 */
+
+			template <typename NUM> friend EuclideanVector& operator*(const EuclideanVector &ev, const NUM s)
+			{
+				double scalar = static_cast<double>(s);
+
+				int d = ev.getNumDimensions();
+				const std::vector<double>& v = ev.getMagnitude();
+				std::vector<double> fm(d);					//initialise the new magnitude vector to the size of the original two
+
+				for (int i=0;i<d;++i) {
+					fm[i] = scalar*v[i];
+				}
+
+				EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+
+				return *product;
+			}
+
+			template <typename NUM> friend EuclideanVector& operator*(const NUM s, const EuclideanVector &ev)
+			{
+
+				double scalar = static_cast<double>(s);
+
+				int d = ev.getNumDimensions();
+				const std::vector<double>& v = ev.getMagnitude();
+				std::vector<double> fm(d);					//initialise the new magnitude vector to the size of the original two
+
+				for (int i=0;i<d;++i) {
+					fm[i] = scalar*v[i];
+				}
+
+				EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+
+				return *product;
+			}
+
+			template <typename NUM> friend EuclideanVector& operator/(const EuclideanVector &ev, const NUM s)
+			{
+
+				double scalar = static_cast<double>(s);
+
+				int d = ev.getNumDimensions();
+				const std::vector<double>& v = ev.getMagnitude();
+				std::vector<double> fm(d);					//initialise the new magnitude vector to the size of the original two
+
+				for (int i=0;i<d;++i) {
+					fm[i] = v[i]/scalar;
+				}
+
+				EuclideanVector *product = new EuclideanVector{fm.begin(),fm.end()};	//create return value using iterator constructor
+
+				return *product;
+			}
 
 		private:
 			unsigned int dimension_;
@@ -122,6 +175,8 @@ namespace cs6771 {
 			//---Private Functions---
 			void updateNormal ();
 
+			//---Static Functions
+			static bool doubleEquals (double a, double b);
 			
 	};
 }
