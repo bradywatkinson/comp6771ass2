@@ -118,6 +118,7 @@ namespace cs6771 {
 		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] += m[i];
 		}
+		updateNormal();
 		return *this;
 	}
 
@@ -132,6 +133,7 @@ namespace cs6771 {
 		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] -= m[i];
 		}
+		updateNormal();
 		return *this;
 	}
 
@@ -141,6 +143,7 @@ namespace cs6771 {
 		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] *= s;
 		}
+		updateNormal();
 		return *this;
 	}
 
@@ -150,6 +153,7 @@ namespace cs6771 {
 		for (int i=0;i<int(dimension_);++i) {
 			magnitude_[i] /= s;
 		}
+		updateNormal();
 		return *this;
 	}
 

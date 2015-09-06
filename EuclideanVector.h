@@ -10,7 +10,7 @@
 #include <typeinfo>
 #include <type_traits>
 
-#define DEBUG false
+#define DEBUG true
 
 namespace cs6771 {
 	class EuclideanVector {
@@ -18,11 +18,6 @@ namespace cs6771 {
 
 			//----Contructors----
 			//normal constructors
-			
-			/*
-			template constructors were required to be in the header file otherwise that must
-			be explicitly intantiated which would defeat the purpose of having them
-			*/
 			
 			//Constructor in a variable of any numeric type and calls the following constructor (which will static cast the paramter to an unsigned int)
 			template <typename NUM> EuclideanVector(const NUM dimension, typename std::enable_if<std::is_arithmetic<NUM>::value>::type* = 0) :
@@ -59,9 +54,10 @@ namespace cs6771 {
 			}
 			
 			/**
-			Takes in a two iterators pointing to the beginning and end of a std container
+			Takes in two iterators pointing to the beginning and end of a std container
+			NOTE: this works through taking !is_arithmetic therefore will also take non iterator arguments
 			*/
-			template <typename IT> EuclideanVector(IT begin, IT end, typename std::enable_if<!std::is_integral<IT>::value>::type* = 0)
+			template <typename IT> EuclideanVector(IT begin, IT end, typename std::enable_if<!std::is_arithmetic<IT>::value>::type* = 0)
 			{
 				magnitude_ = std::vector<double>(begin, end);
 				dimension_ = magnitude_.size();	
